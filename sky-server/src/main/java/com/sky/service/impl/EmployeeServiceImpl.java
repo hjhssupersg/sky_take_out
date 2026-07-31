@@ -82,7 +82,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setCreateUser(BaseContext.getCurrentId());
         employee.setUpdateUser(BaseContext.getCurrentId());
 
-        //调用mapper层的新增方法
+        //调用mapper层的“新增员工”方法
         employeeMapper.insert(employee);
     }
 
