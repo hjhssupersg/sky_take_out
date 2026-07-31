@@ -72,6 +72,12 @@ public class EmployeeController {
     }
 
 
+    /**
+     * 新增员工
+     *
+     * @param employeeDTO
+     * @return
+     */
     @PostMapping
     public Result save(@RequestBody EmployeeDTO employeeDTO) {
         log.info("新增员工：{}", employeeDTO);
