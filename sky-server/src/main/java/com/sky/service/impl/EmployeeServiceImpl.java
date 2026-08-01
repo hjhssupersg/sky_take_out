@@ -21,12 +21,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeMapper employeeMapper;
+
+    /**
+     * 将性别字段进行统一处理
+     * @param sex
+     * @return
+     */
+    private String normalizeSex(String sex) {
+        if (sex == null) {
+            return null;
+        }
+
+        String normalized = sex.trim();
+        if ("1".equals(normalized) || "男".equals(normalized) || "male".equalsIgnoreCase(normalized) || "m".equalsIgnoreCase(normalized)) {
+            return "男";
+        }
+        if ("2".equals(normalized) || "女".equals(normalized) || "female".equalsIgnoreCase(normalized) || "f".equalsIgnoreCase(normalized)) {
+            return "女";
+        }
+        return normalized;
+    }
 
     /**
      * 员工登录
@@ -74,6 +95,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee();
         //拷贝属性
         BeanUtils.copyProperties(employeeDTO, employee);
+        employee.setSex(normalizeSex(employeeDTO.getSex()));
         //设置默认密码123456，并进行MD5加密
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
         //设置状态
@@ -98,7 +120,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public PageResult page(EmployeePageQueryDTO employeePageQueryDTO) {
         PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
         Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
-        return new PageResult(page.getTotal(), page.getResult());
+        List<Employee> employees = page.getResult();
+        if (employees != null) {
+            employees.forEach(employee -> employee.setSex(normalizeSex(employee.getSex())));
+        }
+        return new PageResult(page.getTotal(), employees);
     }
 
     /**
@@ -124,6 +150,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee getById(Long id) {
         Employee employee = employeeMapper.getById(id);
         employee.setPassword("****");
+        employee.setSex(normalizeSex(employee.getSex()));
         return employee;
     }
 
@@ -136,8 +163,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void update(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
+        employee.setSex(normalizeSex(employeeDTO.getSex()));
         employee.setUpdateTime(LocalDateTime.now());
         employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.update(employee);
     }
+
 }
