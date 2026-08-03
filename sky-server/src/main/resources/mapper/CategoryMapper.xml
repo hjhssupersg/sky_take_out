@@ -16,7 +16,7 @@
         order by sort asc , create_time desc
     </select>
 
-    <update id="update" parameterType="Category">
+    <update id="update" parameterType="com.sky.entity.Category">
         update category
         <set>
             <if test="type != null">
@@ -35,7 +35,7 @@
                 update_time = #{updateTime},
             </if>
             <if test="updateUser != null">
-                update_user = #{updateUser}
+                update_user = #{updateUser},
             </if>
         </set>
         where id = #{id}
