@@ -152,4 +152,10 @@ public class DishServiceImpl implements DishService {
          }
 
      }
+     /*
+
+      */
+    public List<Dish> list(Dish dish) {
+        return dishMapper.list(dish);
+    }
 }
