@@ -152,9 +152,11 @@ public class DishServiceImpl implements DishService {
          }
 
      }
-     /*
-
-      */
+    /**
+     * 根据条件查询菜品
+     * @param dish
+     * @return
+     */
     public List<Dish> list(Dish dish) {
         return dishMapper.list(dish);
     }

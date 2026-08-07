@@ -31,6 +31,10 @@ public class SetmealServiceImpl implements SetmealService {
     @Autowired
     private SetmealDishMapper setmealDishMapper;
 
+    /**
+     * 新增套餐及关联菜品
+     * @param setmealDTO
+     */
     @Override
     @Transactional
     public void saveWithDish(SetmealDTO setmealDTO) {
@@ -47,6 +51,11 @@ public class SetmealServiceImpl implements SetmealService {
         setmealDishMapper.insertBatch(dishes);
     }
 
+    /**
+     * 分页查询套餐
+     * @param setmealPageQueryDTO
+     * @return
+     */
     @Override
     public PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO) {
         PageHelper.startPage(setmealPageQueryDTO.getPage(), setmealPageQueryDTO.getPageSize());
@@ -54,6 +63,10 @@ public class SetmealServiceImpl implements SetmealService {
         return new PageResult(page.getTotal(), page.getResult());
     }
 
+    /**
+     * 批量删除套餐
+     * @param ids
+     */
     @Override
     @Transactional
     public void deleteBatch(List<Long> ids) {
@@ -70,6 +83,11 @@ public class SetmealServiceImpl implements SetmealService {
         }
     }
 
+    /**
+     * 查询套餐及关联菜品
+     * @param id
+     * @return
+     */
     @Override
     public SetmealVO getByIdWithDish(Long id) {
         Setmeal setmeal = setmealMapper.getById(id);
@@ -81,6 +99,10 @@ public class SetmealServiceImpl implements SetmealService {
         return setmealVO;
     }
 
+    /**
+     * 修改套餐及关联菜品
+     * @param setmealDTO
+     */
     @Override
     @Transactional
     public void updateWithDish(SetmealDTO setmealDTO) {
@@ -97,6 +119,11 @@ public class SetmealServiceImpl implements SetmealService {
         setmealDishMapper.insertBatch(dishes);
     }
 
+    /**
+     * 启售或停售套餐
+     * @param status
+     * @param id
+     */
     @Override
     public void startOrStop(Integer status, Long id) {
         if (status.equals(StatusConstant.ENABLE)) {
@@ -113,6 +140,10 @@ public class SetmealServiceImpl implements SetmealService {
         setmealMapper.update(setmeal);
     }
 
+    /**
+     * 校验套餐必填信息
+     * @param setmealDTO
+     */
     private void validateSetmeal(SetmealDTO setmealDTO) {
         if (setmealDTO.getName() == null || setmealDTO.getName().trim().isEmpty()
                 || setmealDTO.getCategoryId() == null

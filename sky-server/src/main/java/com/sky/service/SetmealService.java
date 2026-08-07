@@ -9,21 +9,42 @@ import java.util.List;
 
 public interface SetmealService {
 
-    /** 新增套餐及关联菜品 */
+    /**
+     * 新增套餐及关联菜品
+     * @param setmealDTO
+     */
     void saveWithDish(SetmealDTO setmealDTO);
 
-    /** 分页查询套餐 */
+    /**
+     * 分页查询套餐
+     * @param setmealPageQueryDTO
+     * @return
+     */
     PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
 
-    /** 批量删除套餐 */
+    /**
+     * 批量删除套餐
+     * @param ids
+     */
     void deleteBatch(List<Long> ids);
 
-    /** 查询套餐及关联菜品 */
+    /**
+     * 查询套餐及关联菜品
+     * @param id
+     * @return
+     */
     SetmealVO getByIdWithDish(Long id);
 
-    /** 修改套餐及关联菜品 */
+    /**
+     * 修改套餐及关联菜品
+     * @param setmealDTO
+     */
     void updateWithDish(SetmealDTO setmealDTO);
 
-    /** 启售或停售套餐 */
+    /**
+     * 启售或停售套餐
+     * @param status
+     * @param id
+     */
     void startOrStop(Integer status, Long id);
 }

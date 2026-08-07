@@ -48,6 +48,10 @@ public interface DishService {
      */
     void updateWithFlavor(DishDTO dishDTO);
 
-
+    /**
+     * 根据条件查询菜品
+     * @param dish
+     * @return
+     */
     List<Dish> list(Dish dish);
 }

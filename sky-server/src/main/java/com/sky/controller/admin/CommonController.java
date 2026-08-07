@@ -17,14 +17,17 @@ import java.util.UUID;
 @RequestMapping("/admin/common")
 @Slf4j
 /**
- * 文件上传（上传到阿里云OSS对象存储服务平台）
- * @param file
- * @return
+ * 通用接口
  */
 public class CommonController {
     @Autowired
     private AliOssUtil aliOssUtil;
 
+    /**
+     * 文件上传（上传到阿里云OSS对象存储服务平台）
+     * @param file
+     * @return
+     */
     @PostMapping("/upload")
     public Result<String> upload(MultipartFile file) {
         try {
