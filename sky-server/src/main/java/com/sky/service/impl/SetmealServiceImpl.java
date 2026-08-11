@@ -35,7 +35,6 @@ public class SetmealServiceImpl implements SetmealService {
      * 新增套餐及关联菜品
      * @param setmealDTO
      */
-    @Override
     @Transactional
     public void saveWithDish(SetmealDTO setmealDTO) {
         validateSetmeal(setmealDTO);
@@ -56,7 +55,6 @@ public class SetmealServiceImpl implements SetmealService {
      * @param setmealPageQueryDTO
      * @return
      */
-    @Override
     public PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO) {
         PageHelper.startPage(setmealPageQueryDTO.getPage(), setmealPageQueryDTO.getPageSize());
         Page<SetmealVO> page = setmealMapper.pageQuery(setmealPageQueryDTO);
@@ -67,7 +65,6 @@ public class SetmealServiceImpl implements SetmealService {
      * 批量删除套餐
      * @param ids
      */
-    @Override
     @Transactional
     public void deleteBatch(List<Long> ids) {
         for (Long id : ids) {
@@ -88,7 +85,6 @@ public class SetmealServiceImpl implements SetmealService {
      * @param id
      * @return
      */
-    @Override
     public SetmealVO getByIdWithDish(Long id) {
         Setmeal setmeal = setmealMapper.getById(id);
         List<SetmealDish> dishes = setmealDishMapper.getBySetmealId(id);
@@ -103,7 +99,6 @@ public class SetmealServiceImpl implements SetmealService {
      * 修改套餐及关联菜品
      * @param setmealDTO
      */
-    @Override
     @Transactional
     public void updateWithDish(SetmealDTO setmealDTO) {
         validateSetmeal(setmealDTO);
@@ -124,7 +119,6 @@ public class SetmealServiceImpl implements SetmealService {
      * @param status
      * @param id
      */
-    @Override
     public void startOrStop(Integer status, Long id) {
         if (status.equals(StatusConstant.ENABLE)) {
             List<Integer> dishStatuses = setmealDishMapper.getDishStatusesBySetmealId(id);

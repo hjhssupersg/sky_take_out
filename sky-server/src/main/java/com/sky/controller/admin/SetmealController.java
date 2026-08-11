@@ -30,7 +30,7 @@ public class SetmealController {
      */
     @PostMapping
     @ApiOperation("新增套餐")
-    public Result<String> save(@RequestBody SetmealDTO setmealDTO) {
+    public Result save(@RequestBody SetmealDTO setmealDTO) {
         log.info("新增套餐：{}", setmealDTO);
         setmealService.saveWithDish(setmealDTO);
         return Result.success();
