@@ -20,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -43,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
      * @param ordersSubmitDTO
      * @return
      */
+    @Transactional
     public OrderSubmitVO submitOrder(OrdersSubmitDTO ordersSubmitDTO) {
         //处理各种异常（地址簿为空、购物车为空）
         //（地址簿为空）
@@ -79,9 +81,10 @@ public class OrderServiceImpl implements OrderService {
             BeanUtils.copyProperties(cart, orderDetail);
             orderDetail.setOrderId(orders.getId());
             orderDetailList.add(orderDetail);
-
-            orderDetailMapper.insertBatch(orderDetailList);
         }
+
+        //购物车明细全部组装完成后，只批量插入一次，避免在循环中重复插入
+        orderDetailMapper.insertBatch(orderDetailList);
 
         //清空当前用户的购物车数据
         shoppingCartMapper.deleteByUserId(userId);
