@@ -1,5 +1,6 @@
 package com.sky.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
@@ -21,6 +22,7 @@ import com.sky.service.OrderService;
 import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import com.sky.websocket.WebSocketServer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,13 +41,13 @@ public class OrderServiceImpl implements OrderService {
     @Autowired private OrderDetailMapper orderDetailMapper;
     @Autowired private AddressBookMapper addressBookMapper;
     @Autowired private ShoppingCartMapper shoppingCartMapper;
+    @Autowired private WebSocketServer webSocketServer;
 
     /**
      * 提交订单并生成订单明细
      * @param ordersSubmitDTO 下单信息
      * @return 订单提交结果
      */
-    @Override
     @Transactional
     public OrderSubmitVO submitOrder(OrdersSubmitDTO ordersSubmitDTO) {
         Long userId = BaseContext.getCurrentId();
@@ -85,15 +89,19 @@ public class OrderServiceImpl implements OrderService {
      * 完成本地模拟支付并清空购物车
      * @param ordersPaymentDTO 支付信息
      */
-    @Override
     @Transactional
     public void pay(OrdersPaymentDTO ordersPaymentDTO) {
         if (ordersPaymentDTO.getOrderNumber() == null || ordersPaymentDTO.getOrderNumber().trim().isEmpty()) {
             throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
         }
-        int changed = orderMapper.markPaid(ordersPaymentDTO.getOrderNumber(), BaseContext.getCurrentId(), LocalDateTime.now());
+        Long userId = BaseContext.getCurrentId();
+        Orders orders = orderMapper.getByNumberAndUserId(ordersPaymentDTO.getOrderNumber(), userId);
+        if (orders == null) throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+
+        int changed = orderMapper.markPaid(ordersPaymentDTO.getOrderNumber(), userId, LocalDateTime.now());
         if (changed == 0) throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
-        shoppingCartMapper.deleteByUserId(BaseContext.getCurrentId());
+        shoppingCartMapper.deleteByUserId(userId);
+        sendOrderNotification(1, orders.getId(), orders.getNumber());
     }
 
     /**
@@ -103,7 +111,6 @@ public class OrderServiceImpl implements OrderService {
      * @param status 订单状态
      * @return 订单分页数据
      */
-    @Override
     public PageResult pageQuery4User(int pageNum, int pageSize, Integer status) {
         PageHelper.startPage(pageNum, pageSize);
         OrdersPageQueryDTO query = new OrdersPageQueryDTO();
@@ -118,7 +125,6 @@ public class OrderServiceImpl implements OrderService {
      * @param id 订单id
      * @return 订单详情
      */
-    @Override
     public OrderVO details(Long id) {
         Orders orders = getRequiredOrder(id);
         return toOrderVO(orders);
@@ -129,7 +135,6 @@ public class OrderServiceImpl implements OrderService {
      * @param id 订单id
      * @return 订单详情
      */
-    @Override
     public OrderVO details4User(Long id) {
         Orders orders = getRequiredOrder(id);
         if (!BaseContext.getCurrentId().equals(orders.getUserId())) {
@@ -142,7 +147,6 @@ public class OrderServiceImpl implements OrderService {
      * 取消当前用户订单
      * @param id 订单id
      */
-    @Override
     @Transactional
     public void userCancelById(Long id) {
         Orders orders = getRequiredOrder(id);
@@ -155,7 +159,6 @@ public class OrderServiceImpl implements OrderService {
      * 将历史订单商品加入当前用户购物车
      * @param id 订单id
      */
-    @Override
     @Transactional
     public void repetition(Long id) {
         Orders orders = getRequiredOrder(id);
@@ -172,11 +175,25 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
+     * 用户催单，并向在线管理端推送通知
+     * @param id 订单id
+     */
+    public void reminder(Long id) {
+        Orders orders = getRequiredOrder(id);
+        if (!BaseContext.getCurrentId().equals(orders.getUserId())) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        if (orders.getStatus() < Orders.TO_BE_CONFIRMED || orders.getStatus() > Orders.DELIVERY_IN_PROGRESS) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        sendOrderNotification(2, orders.getId(), orders.getNumber());
+    }
+
+    /**
      * 管理端条件分页查询订单
      * @param query 查询条件
      * @return 订单分页数据
      */
-    @Override
     public PageResult conditionSearch(OrdersPageQueryDTO query) {
         PageHelper.startPage(query.getPage(), query.getPageSize());
         Page<Orders> page = orderMapper.pageQuery(query);
@@ -187,7 +204,6 @@ public class OrderServiceImpl implements OrderService {
      * 统计待接单、待派送和派送中的订单数量
      * @return 订单统计数据
      */
-    @Override
     public OrderStatisticsVO statistics() {
         OrderStatisticsVO result = new OrderStatisticsVO();
         result.setToBeConfirmed(orderMapper.countStatus(Orders.TO_BE_CONFIRMED));
@@ -200,7 +216,7 @@ public class OrderServiceImpl implements OrderService {
      * 接单
      * @param dto 接单信息
      */
-    @Override @Transactional
+    @Transactional
     public void confirm(OrdersConfirmDTO dto) {
         Orders orders = getRequiredOrder(dto.getId());
         if (!Orders.TO_BE_CONFIRMED.equals(orders.getStatus())) throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
@@ -211,7 +227,7 @@ public class OrderServiceImpl implements OrderService {
      * 拒单
      * @param dto 拒单信息
      */
-    @Override @Transactional
+    @Transactional
     public void rejection(OrdersRejectionDTO dto) {
         Orders orders = getRequiredOrder(dto.getId());
         if (!Orders.TO_BE_CONFIRMED.equals(orders.getStatus())) throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
@@ -222,7 +238,7 @@ public class OrderServiceImpl implements OrderService {
      * 取消订单
      * @param dto 取消订单信息
      */
-    @Override @Transactional
+    @Transactional
     public void cancel(OrdersCancelDTO dto) {
         Orders orders = getRequiredOrder(dto.getId());
         if (Orders.CANCELLED.equals(orders.getStatus()) || Orders.COMPLETED.equals(orders.getStatus())) {
@@ -235,7 +251,7 @@ public class OrderServiceImpl implements OrderService {
      * 派送订单
      * @param id 订单id
      */
-    @Override @Transactional
+    @Transactional
     public void delivery(Long id) {
         Orders orders = getRequiredOrder(id);
         if (!Orders.CONFIRMED.equals(orders.getStatus())) throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
@@ -246,7 +262,7 @@ public class OrderServiceImpl implements OrderService {
      * 完成订单
      * @param id 订单id
      */
-    @Override @Transactional
+    @Transactional
     public void complete(Long id) {
         Orders orders = getRequiredOrder(id);
         if (!Orders.DELIVERY_IN_PROGRESS.equals(orders.getStatus())) throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
@@ -319,6 +335,17 @@ public class OrderServiceImpl implements OrderService {
         update.setCancelTime(LocalDateTime.now());
         if (Orders.PAID.equals(orders.getPayStatus())) update.setPayStatus(Orders.REFUND);
         orderMapper.update(update);
+    }
+
+    /**
+     * 按前后端约定封装订单通知并广播给在线管理端
+     */
+    private void sendOrderNotification(int type, Long orderId, String orderNumber) {
+        Map<String, Object> message = new HashMap<>();
+        message.put("type", type);
+        message.put("orderId", orderId);
+        message.put("content", "订单号：" + orderNumber);
+        webSocketServer.sendToAllClient(JSON.toJSONString(message));
     }
 
     /**

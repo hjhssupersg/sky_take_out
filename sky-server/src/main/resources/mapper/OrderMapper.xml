@@ -27,6 +27,15 @@
         select * from orders where id = #{id}
     </select>
 
+    <select id="getByNumberAndUserId" resultType="com.sky.entity.Orders">
+        select * from orders where number = #{orderNumber} and user_id = #{userId}
+    </select>
+
+    <select id="getByStatusAndOrderTimeBefore" resultType="com.sky.entity.Orders">
+        select * from orders
+        where status = #{status} and order_time &lt; #{orderTime}
+    </select>
+
     <select id="pageQuery" resultType="com.sky.entity.Orders">
         select * from orders
         <where>

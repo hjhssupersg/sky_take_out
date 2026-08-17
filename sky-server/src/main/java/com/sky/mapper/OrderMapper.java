@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Mapper
 public interface OrderMapper {
@@ -29,6 +30,25 @@ public interface OrderMapper {
      * @return 订单信息
      */
     Orders getById(Long id);
+
+    /**
+     * 根据订单号和用户查询订单。
+     *
+     * @param orderNumber 订单号
+     * @param userId 用户id
+     * @return 订单信息
+     */
+    Orders getByNumberAndUserId(@Param("orderNumber") String orderNumber, @Param("userId") Long userId);
+
+    /**
+     * 查询在指定时间之前、处于指定状态的订单。
+     *
+     * @param status 订单状态
+     * @param orderTime 下单时间上限
+     * @return 符合条件的订单列表
+     */
+    List<Orders> getByStatusAndOrderTimeBefore(@Param("status") Integer status,
+                                               @Param("orderTime") LocalDateTime orderTime);
 
     /**
      * 条件分页查询订单
