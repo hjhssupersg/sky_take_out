@@ -38,6 +38,13 @@ public interface DishMapper {
     Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
 
     /**
+     * 根据条件统计菜品数量
+     * @param dishPageQueryDTO 查询条件
+     * @return 菜品数量
+     */
+    Integer countByMap(DishPageQueryDTO dishPageQueryDTO);
+
+    /**
      * 根据主键查询菜品
      * @param id
      * @return

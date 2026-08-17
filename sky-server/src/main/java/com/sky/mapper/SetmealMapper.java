@@ -40,6 +40,13 @@ public interface SetmealMapper {
     Page<SetmealVO> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
 
     /**
+     * 根据条件统计套餐数量
+     * @param setmealPageQueryDTO 查询条件
+     * @return 套餐数量
+     */
+    Integer countByMap(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    /**
      * 根据id查询套餐
      * @param id
      * @return

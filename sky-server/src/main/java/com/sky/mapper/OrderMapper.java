@@ -1,8 +1,10 @@
 package com.sky.mapper;
 
-import com.sky.entity.Orders;
 import com.github.pagehelper.Page;
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.dto.OrdersPageQueryDTO;
+import com.sky.dto.ReportQueryDTO;
+import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,6 +13,28 @@ import java.util.List;
 
 @Mapper
 public interface OrderMapper {
+    /**
+     * 根据动态条件统计营业额
+     * @param reportQueryDTO 查询条件
+     * @return 营业额合计
+     */
+    Double sumByMap(ReportQueryDTO reportQueryDTO);
+
+    /**
+     * 根据动态条件统计订单数量
+     * @param reportQueryDTO 查询条件
+     * @return 订单数量
+     */
+    Integer countByMap(ReportQueryDTO reportQueryDTO);
+
+    /**
+     * 查询指定时间区间内的销量排名前十商品
+     * @param begin 开始时间
+     * @param end 结束时间
+     * @return 商品销量列表
+     */
+    List<GoodsSalesDTO> getSalesTop10(@Param("begin") LocalDateTime begin,
+                                      @Param("end") LocalDateTime end);
     /**
      * 新增订单
      * @param orders
