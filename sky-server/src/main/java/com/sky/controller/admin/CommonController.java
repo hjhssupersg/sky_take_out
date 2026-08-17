@@ -30,8 +30,8 @@ public class CommonController {
      */
     @PostMapping("/upload")
     public Result<String> upload(MultipartFile file) {
+        log.info("文件上传：{}", file);
         try {
-            log.info("文件上传：{}", file);
             //原始文件名
             String originalFileName = file.getOriginalFilename();
             //原始文件名后缀

@@ -66,6 +66,7 @@ public class EmployeeController {
      */
     @PostMapping("/logout")
     public Result<String> logout() {
+        log.info("员工退出登录");
         return Result.success();
     }
 

@@ -38,6 +38,11 @@ public class OrderServiceImpl implements OrderService {
     @Autowired private AddressBookMapper addressBookMapper;
     @Autowired private ShoppingCartMapper shoppingCartMapper;
 
+    /**
+     * 提交订单并生成订单明细
+     * @param ordersSubmitDTO 下单信息
+     * @return 订单提交结果
+     */
     @Override
     @Transactional
     public OrderSubmitVO submitOrder(OrdersSubmitDTO ordersSubmitDTO) {
@@ -76,6 +81,10 @@ public class OrderServiceImpl implements OrderService {
                 .orderAmount(orders.getAmount()).orderTime(orders.getOrderTime()).build();
     }
 
+    /**
+     * 完成本地模拟支付并清空购物车
+     * @param ordersPaymentDTO 支付信息
+     */
     @Override
     @Transactional
     public void pay(OrdersPaymentDTO ordersPaymentDTO) {
@@ -87,6 +96,13 @@ public class OrderServiceImpl implements OrderService {
         shoppingCartMapper.deleteByUserId(BaseContext.getCurrentId());
     }
 
+    /**
+     * 分页查询当前用户历史订单
+     * @param pageNum 页码
+     * @param pageSize 每页记录数
+     * @param status 订单状态
+     * @return 订单分页数据
+     */
     @Override
     public PageResult pageQuery4User(int pageNum, int pageSize, Integer status) {
         PageHelper.startPage(pageNum, pageSize);
@@ -97,12 +113,22 @@ public class OrderServiceImpl implements OrderService {
         return new PageResult(page.getTotal(), toOrderVOList(page));
     }
 
+    /**
+     * 查询订单详情
+     * @param id 订单id
+     * @return 订单详情
+     */
     @Override
     public OrderVO details(Long id) {
         Orders orders = getRequiredOrder(id);
         return toOrderVO(orders);
     }
 
+    /**
+     * 查询当前用户的订单详情
+     * @param id 订单id
+     * @return 订单详情
+     */
     @Override
     public OrderVO details4User(Long id) {
         Orders orders = getRequiredOrder(id);
@@ -112,6 +138,10 @@ public class OrderServiceImpl implements OrderService {
         return toOrderVO(orders);
     }
 
+    /**
+     * 取消当前用户订单
+     * @param id 订单id
+     */
     @Override
     @Transactional
     public void userCancelById(Long id) {
@@ -121,6 +151,10 @@ public class OrderServiceImpl implements OrderService {
         cancelOrder(orders, "用户取消", null);
     }
 
+    /**
+     * 将历史订单商品加入当前用户购物车
+     * @param id 订单id
+     */
     @Override
     @Transactional
     public void repetition(Long id) {
@@ -137,6 +171,11 @@ public class OrderServiceImpl implements OrderService {
         if (!carts.isEmpty()) shoppingCartMapper.insertBatch(carts);
     }
 
+    /**
+     * 管理端条件分页查询订单
+     * @param query 查询条件
+     * @return 订单分页数据
+     */
     @Override
     public PageResult conditionSearch(OrdersPageQueryDTO query) {
         PageHelper.startPage(query.getPage(), query.getPageSize());
@@ -144,6 +183,10 @@ public class OrderServiceImpl implements OrderService {
         return new PageResult(page.getTotal(), toOrderVOList(page));
     }
 
+    /**
+     * 统计待接单、待派送和派送中的订单数量
+     * @return 订单统计数据
+     */
     @Override
     public OrderStatisticsVO statistics() {
         OrderStatisticsVO result = new OrderStatisticsVO();
@@ -153,6 +196,10 @@ public class OrderServiceImpl implements OrderService {
         return result;
     }
 
+    /**
+     * 接单
+     * @param dto 接单信息
+     */
     @Override @Transactional
     public void confirm(OrdersConfirmDTO dto) {
         Orders orders = getRequiredOrder(dto.getId());
@@ -160,6 +207,10 @@ public class OrderServiceImpl implements OrderService {
         updateStatus(orders.getId(), Orders.CONFIRMED);
     }
 
+    /**
+     * 拒单
+     * @param dto 拒单信息
+     */
     @Override @Transactional
     public void rejection(OrdersRejectionDTO dto) {
         Orders orders = getRequiredOrder(dto.getId());
@@ -167,6 +218,10 @@ public class OrderServiceImpl implements OrderService {
         cancelOrder(orders, null, dto.getRejectionReason());
     }
 
+    /**
+     * 取消订单
+     * @param dto 取消订单信息
+     */
     @Override @Transactional
     public void cancel(OrdersCancelDTO dto) {
         Orders orders = getRequiredOrder(dto.getId());
@@ -176,6 +231,10 @@ public class OrderServiceImpl implements OrderService {
         cancelOrder(orders, dto.getCancelReason(), null);
     }
 
+    /**
+     * 派送订单
+     * @param id 订单id
+     */
     @Override @Transactional
     public void delivery(Long id) {
         Orders orders = getRequiredOrder(id);
@@ -183,6 +242,10 @@ public class OrderServiceImpl implements OrderService {
         updateStatus(id, Orders.DELIVERY_IN_PROGRESS);
     }
 
+    /**
+     * 完成订单
+     * @param id 订单id
+     */
     @Override @Transactional
     public void complete(Long id) {
         Orders orders = getRequiredOrder(id);
@@ -194,10 +257,20 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.update(update);
     }
 
+    /**
+     * 将订单列表转换为订单视图对象列表
+     * @param orders 订单列表
+     * @return 订单视图对象列表
+     */
     private List<OrderVO> toOrderVOList(List<Orders> orders) {
         return orders.stream().map(this::toOrderVO).collect(Collectors.toList());
     }
 
+    /**
+     * 将订单转换为订单视图对象
+     * @param orders 订单信息
+     * @return 订单视图对象
+     */
     private OrderVO toOrderVO(Orders orders) {
         OrderVO orderVO = new OrderVO();
         BeanUtils.copyProperties(orders, orderVO);
@@ -208,12 +281,22 @@ public class OrderServiceImpl implements OrderService {
         return orderVO;
     }
 
+    /**
+     * 查询指定订单，不存在时抛出业务异常
+     * @param id 订单id
+     * @return 订单信息
+     */
     private Orders getRequiredOrder(Long id) {
         Orders orders = orderMapper.getById(id);
         if (orders == null) throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
         return orders;
     }
 
+    /**
+     * 更新订单状态
+     * @param id 订单id
+     * @param status 订单状态
+     */
     private void updateStatus(Long id, Integer status) {
         Orders update = new Orders();
         update.setId(id);
@@ -221,6 +304,12 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.update(update);
     }
 
+    /**
+     * 取消订单并记录取消或拒单原因
+     * @param orders 原订单信息
+     * @param cancelReason 取消原因
+     * @param rejectionReason 拒单原因
+     */
     private void cancelOrder(Orders orders, String cancelReason, String rejectionReason) {
         Orders update = new Orders();
         update.setId(orders.getId());
@@ -232,6 +321,11 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.update(update);
     }
 
+    /**
+     * 拼接地址簿中的完整地址
+     * @param addressBook 地址簿信息
+     * @return 完整地址
+     */
     private String buildFullAddress(AddressBook addressBook) {
         return String.valueOf(addressBook.getProvinceName()) + String.valueOf(addressBook.getCityName())
                 + String.valueOf(addressBook.getDistrictName()) + String.valueOf(addressBook.getDetail());

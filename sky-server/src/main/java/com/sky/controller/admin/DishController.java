@@ -122,12 +122,17 @@ public class DishController {
      * @return
      */
     public Result<List<Dish>> list(Long categoryId) {
+        log.info("根据分类id查询菜品：{}", categoryId);
         Dish dish = Dish.builder().categoryId(categoryId).status(StatusConstant.ENABLE).build();
         return Result.success(dishService.list(dish));
     }
 
-    //清理缓存
+    /**
+     * 清理菜品缓存
+     * @param pattern 缓存键模式
+     */
     public void cleanCache(String pattern) {
+        log.info("清理菜品缓存：{}", pattern);
         Set<String> keys = redisTemplate.keys(pattern);
         redisTemplate.delete(keys);
     }

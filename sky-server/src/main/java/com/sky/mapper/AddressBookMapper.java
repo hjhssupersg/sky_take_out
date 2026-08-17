@@ -33,6 +33,12 @@ public interface AddressBookMapper {
     @Select("select * from address_book where id = #{id}")
     AddressBook getById(Long id);
 
+    /**
+     * 根据地址id和用户id查询地址
+     * @param id 地址id
+     * @param userId 用户id
+     * @return 地址信息
+     */
     @Select("select * from address_book where id = #{id} and user_id = #{userId}")
     AddressBook getByIdAndUserId(@Param("id") Long id, @Param("userId") Long userId);
 

@@ -23,11 +23,30 @@ public interface OrderMapper {
                  @Param("userId") Long userId,
                  @Param("checkoutTime") LocalDateTime checkoutTime);
 
+    /**
+     * 根据id查询订单
+     * @param id 订单id
+     * @return 订单信息
+     */
     Orders getById(Long id);
 
+    /**
+     * 条件分页查询订单
+     * @param ordersPageQueryDTO 查询条件
+     * @return 订单分页数据
+     */
     Page<Orders> pageQuery(OrdersPageQueryDTO ordersPageQueryDTO);
 
+    /**
+     * 统计指定状态的订单数量
+     * @param status 订单状态
+     * @return 订单数量
+     */
     Integer countStatus(Integer status);
 
+    /**
+     * 动态更新订单信息
+     * @param orders 订单信息
+     */
     void update(Orders orders);
 }

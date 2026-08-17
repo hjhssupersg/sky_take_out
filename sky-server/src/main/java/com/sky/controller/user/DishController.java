@@ -34,6 +34,7 @@ public class DishController {
     @GetMapping("/list")
     @ApiOperation("根据分类id查询菜品")
     public Result<List<DishVO>> list(Long categoryId) {
+        log.info("根据分类id查询菜品：{}", categoryId);
         //先构造redis需要的key（dish_ + categoryId）
         String key = "dish_" + categoryId;
         //查询redis中是否存在要查询的菜品
