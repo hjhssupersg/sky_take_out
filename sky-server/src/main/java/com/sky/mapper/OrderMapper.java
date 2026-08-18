@@ -11,6 +11,9 @@ import org.apache.ibatis.annotations.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 负责订单数据的持久化访问
+ */
 @Mapper
 public interface OrderMapper {
     /**
@@ -37,12 +40,12 @@ public interface OrderMapper {
                                       @Param("end") LocalDateTime end);
     /**
      * 新增订单
-     * @param orders
+     * @param orders 订单对象或订单列表
      */
     void insert(Orders orders);
 
     /**
-     * 将当前用户的待付款订单标记为已支付。
+     * 将当前用户的待付款订单标记为已支付
      */
     int markPaid(@Param("orderNumber") String orderNumber,
                  @Param("userId") Long userId,
@@ -56,7 +59,7 @@ public interface OrderMapper {
     Orders getById(Long id);
 
     /**
-     * 根据订单号和用户查询订单。
+     * 根据订单号和用户查询订单
      *
      * @param orderNumber 订单号
      * @param userId 用户id
@@ -65,7 +68,7 @@ public interface OrderMapper {
     Orders getByNumberAndUserId(@Param("orderNumber") String orderNumber, @Param("userId") Long userId);
 
     /**
-     * 查询在指定时间之前、处于指定状态的订单。
+     * 查询在指定时间之前、处于指定状态的订单
      *
      * @param status 订单状态
      * @param orderTime 下单时间上限

@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 封装菜品的分页筛选条件
+ */
 @Data
 public class DishPageQueryDTO implements Serializable {
 

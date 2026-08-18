@@ -29,14 +29,16 @@ import java.util.List;
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     @Autowired
+    //管理端JWT拦截器
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
     @Autowired
+    //用户端JWT拦截器
     private JwtTokenUserInterceptor jwtTokenUserInterceptor;
 
     /**
      * 注册自定义拦截器
      *
-     * @param registry
+     * @param registry Spring组件注册表
      */
     protected void addInterceptors(InterceptorRegistry registry) {
         log.info("开始注册自定义拦截器...");
@@ -52,7 +54,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     /**
      * 通过knife4j生成接口文档
-     * @return
+     * @return业务处理结果
      */
     @Bean
     public Docket docket() {
@@ -72,7 +74,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     /**
      * 设置静态资源映射
-     * @param registry
+     * @param registry Spring组件注册表
      */
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
@@ -81,7 +83,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     /**
      * 扩展消息转换器
-     * @param converters
+     * @param converters Spring MVC消息转换器集合
      */
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         log.info("扩展消息转换器...");

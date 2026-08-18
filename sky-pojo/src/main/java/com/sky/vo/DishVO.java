@@ -11,12 +11,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 封装菜品业务的接口返回数据
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class DishVO implements Serializable {
 
+    //业务对象主键
     private Long id;
     //菜品名称
     private String name;
@@ -35,6 +39,7 @@ public class DishVO implements Serializable {
     //分类名称
     private String categoryName;
     //菜品关联的口味
+    //WebSocket会话集合，保存当前在线管理端连接
     private List<DishFlavor> flavors = new ArrayList<>();
 
     //private Integer copies;

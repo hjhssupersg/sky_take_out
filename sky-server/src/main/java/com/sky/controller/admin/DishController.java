@@ -17,22 +17,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
-@RestController("adminDishController")
-@RequestMapping("/admin/dish")
-@Slf4j
 /**
  * 菜品管理
  */
+@RestController("adminDishController")
+@RequestMapping("/admin/dish")
+@Slf4j
 public class DishController {
     @Autowired
+    //菜品业务服务
     private DishService dishService;
     @Autowired
+    //Redis数据访问模板
     private RedisTemplate redisTemplate;
 
     /**
      * 新增菜品
-     * @param dishDTO
-     * @return
+     * @param dishDTO 菜品请求参数
+     * @return业务处理结果
      */
     @PostMapping
     public Result save(@RequestBody DishDTO dishDTO) {
@@ -47,8 +49,8 @@ public class DishController {
 
     /**
      * 菜品分页查询
-     * @param dishPageQueryDTO
-     * @return
+     * @param dishPageQueryDTO 菜品分页查询条件
+     * @return业务处理结果
      */
     @GetMapping("/page")
     public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO) {
@@ -59,8 +61,8 @@ public class DishController {
 
     /**
      * 菜品批量删除
-     * @param ids
-     * @return
+     * @param ids 业务对象主键集合
+     * @return业务处理结果
      */
     @DeleteMapping
     public Result delete(@RequestParam List<Long> ids) {
@@ -74,9 +76,9 @@ public class DishController {
 
     /**
      * 起售、停售菜品
-     * @param status
-     * @param id
-     * @return
+     * @param status 业务状态编码
+     * @param id 业务对象主键
+     * @return业务处理结果
      */
     @PostMapping("/status/{status}")
     public Result startOrStop(@PathVariable Integer status, Long id) {
@@ -90,8 +92,8 @@ public class DishController {
 
     /**
      * 根据id查询菜品信息和对应的口味信息
-     * @param id
-     * @return
+     * @param id 业务对象主键
+     * @return业务处理结果
      */
     @GetMapping("/{id}")
     public Result<DishVO> getByIdWithFlavor(@PathVariable Long id) {
@@ -102,8 +104,8 @@ public class DishController {
 
     /**
      * 修改菜品和对应的口味
-     * @param dishDTO
-     * @return
+     * @param dishDTO 菜品请求参数
+     * @return业务处理结果
      */
     @PutMapping
     public Result update(@RequestBody DishDTO dishDTO) {
@@ -115,12 +117,12 @@ public class DishController {
         return Result.success();
     }
 
-    @GetMapping("/list")
     /**
      * 根据分类id查询菜品
-     * @param categoryId
-     * @return
+     * @param categoryId 分类主键
+     * @return业务处理结果
      */
+    @GetMapping("/list")
     public Result<List<Dish>> list(Long categoryId) {
         log.info("根据分类id查询菜品：{}", categoryId);
         Dish dish = Dish.builder().categoryId(categoryId).status(StatusConstant.ENABLE).build();

@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 负责接收并处理管理端套餐相关HTTP请求
+ */
 @RestController
 @RequestMapping("/admin/setmeal")
 @Api(tags = "套餐相关接口")
@@ -22,12 +25,13 @@ import java.util.List;
 public class SetmealController {
 
     @Autowired
+    //套餐业务服务
     private SetmealService setmealService;
 
     /**
      * 新增套餐及其关联菜品
-     * @param setmealDTO
-     * @return
+     * @param setmealDTO 套餐请求参数
+     * @return业务处理结果
      */
     @PostMapping
     @ApiOperation("新增套餐")
@@ -40,8 +44,8 @@ public class SetmealController {
 
     /**
      * 套餐分页查询
-     * @param queryDTO
-     * @return
+     * @param queryDTO 查询条件
+     * @return业务处理结果
      */
     @GetMapping("/page")
     @ApiOperation("套餐分页查询")
@@ -52,8 +56,8 @@ public class SetmealController {
 
     /**
      * 批量删除套餐
-     * @param ids
-     * @return
+     * @param ids 业务对象主键集合
+     * @return业务处理结果
      */
     @DeleteMapping
     @ApiOperation("批量删除套餐")
@@ -66,8 +70,8 @@ public class SetmealController {
 
     /**
      * 根据id查询套餐详情及其关联菜品
-     * @param id
-     * @return
+     * @param id 业务对象主键
+     * @return业务处理结果
      */
     @GetMapping("/{id}")
     @ApiOperation("根据id查询套餐")
@@ -78,8 +82,8 @@ public class SetmealController {
 
     /**
      * 修改套餐及其关联菜品
-     * @param setmealDTO
-     * @return
+     * @param setmealDTO 套餐请求参数
+     * @return业务处理结果
      */
     @PutMapping
     @ApiOperation("修改套餐")
@@ -92,9 +96,9 @@ public class SetmealController {
 
     /**
      * 启售或停售套餐
-     * @param status
-     * @param id
-     * @return
+     * @param status 业务状态编码
+     * @param id 业务对象主键
+     * @return业务处理结果
      */
     @PostMapping("/status/{status}")
     @ApiOperation("套餐起售或停售")

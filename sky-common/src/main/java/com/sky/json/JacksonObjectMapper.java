@@ -24,11 +24,16 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKN
  */
 public class JacksonObjectMapper extends ObjectMapper {
 
+    //报表日期格式
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     //public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
+    //报表时间格式
     public static final String DEFAULT_TIME_FORMAT = "HH:mm:ss";
 
+    /**
+     * 初始化Jackson对象映射器，并注册日期时间序列化规则
+     */
     public JacksonObjectMapper() {
         super();
         //收到未知属性时不报异常

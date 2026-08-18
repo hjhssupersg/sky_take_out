@@ -5,9 +5,15 @@ package com.sky.exception;
  */
 public class AccountNotFoundException extends BaseException {
 
+    /**
+     * 创建账号不存在异常对象
+     */
     public AccountNotFoundException() {
     }
 
+    /**
+     * 创建账号不存在异常对象
+     */
     public AccountNotFoundException(String msg) {
         super(msg);
     }

@@ -16,21 +16,27 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 实现购物车业务规则、数据校验及持久化协调
+ */
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Autowired
+    //购物车数据访问对象
     private ShoppingCartMapper shoppingCartMapper;
     @Autowired
+    //菜品数据访问对象
     private DishMapper dishMapper;
     @Autowired
+    //套餐数据访问对象
     private SetmealMapper setmealMapper;
 
 
     /**
      * 添加购物车
      *
-     * @param shoppingCartDTO
+     * @param shoppingCartDTO 购物车请求参数
      */
     public void addShoppingCart(ShoppingCartDTO shoppingCartDTO) {
         //判断当前加入购物车的数据是否已经存在
@@ -74,7 +80,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     /**
      * 查看购物车
      *
-     * @return
+     * @return业务处理结果
      */
     public List<ShoppingCart> showShoppingCart() {
         Long userId = BaseContext.getCurrentId();

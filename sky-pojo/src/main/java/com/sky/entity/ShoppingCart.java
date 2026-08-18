@@ -18,8 +18,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ShoppingCart implements Serializable {
 
+    //序列化版本标识
     private static final long serialVersionUID = 1L;
 
+    //业务对象主键
     private Long id;
 
     //名称
@@ -46,5 +48,6 @@ public class ShoppingCart implements Serializable {
     //图片
     private String image;
 
+    //创建时间
     private LocalDateTime createTime;
 }

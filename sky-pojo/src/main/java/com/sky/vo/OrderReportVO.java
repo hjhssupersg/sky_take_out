@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * 封装订单统计报表业务的接口返回数据
+ */
 @Data
 @Builder
 @NoArgsConstructor

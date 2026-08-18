@@ -11,17 +11,20 @@ import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
 
+/**
+ * 定义订单业务对外提供的操作
+ */
 public interface OrderService {
 
     /**
      * 用户下单
-     * @param ordersSubmitDTO
-     * @return
+     * @param ordersSubmitDTO 用户下单请求参数
+     * @return业务处理结果
      */
     OrderSubmitVO submitOrder(OrdersSubmitDTO ordersSubmitDTO);
 
     /**
-     * 完成本地模拟支付，不调用第三方支付平台。
+     * 完成本地模拟支付，不调用第三方支付平台
      * @param ordersPaymentDTO 支付订单信息
      */
     void pay(OrdersPaymentDTO ordersPaymentDTO);

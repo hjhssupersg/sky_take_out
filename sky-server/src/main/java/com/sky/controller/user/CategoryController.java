@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
+/**
+ * 负责接收并处理用户端分类相关HTTP请求
+ */
 @RestController("userCategoryController")
 @RequestMapping("/user/category")
 @Api(tags = "C端-分类接口")
@@ -19,12 +22,13 @@ import java.util.List;
 public class CategoryController {
 
     @Autowired
+    //分类业务服务
     private CategoryService categoryService;
 
     /**
      * 查询分类
-     * @param type
-     * @return
+     * @param type 业务类型编码
+     * @return业务处理结果
      */
     @GetMapping("/list")
     @ApiOperation("查询分类")

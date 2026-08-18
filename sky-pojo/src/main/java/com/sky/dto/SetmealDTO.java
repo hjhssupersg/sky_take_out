@@ -7,9 +7,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 封装套餐业务的请求参数
+ */
 @Data
 public class SetmealDTO implements Serializable {
 
+    //业务对象主键
     private Long id;
 
     //分类id
@@ -31,6 +35,7 @@ public class SetmealDTO implements Serializable {
     private String image;
 
     //套餐菜品关系
+    //WebSocket会话集合，保存当前在线管理端连接
     private List<SetmealDish> setmealDishes = new ArrayList<>();
 
 }

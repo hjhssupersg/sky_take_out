@@ -29,14 +29,16 @@ import java.util.Map;
 
 public class UserController {
     @Autowired
+    //用户业务服务
     private UserService userService;
     @Autowired
+    //JWT令牌配置
     private JwtProperties jwtProperties;
 
     /**
      * 用户微信登录
-     * @param userLoginDTO
-     * @return
+     * @param userLoginDTO 用户登录请求参数
+     * @return业务处理结果
      */
     @PostMapping("/login")
     public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {

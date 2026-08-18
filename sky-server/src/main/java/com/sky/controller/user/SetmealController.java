@@ -17,19 +17,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * 负责接收并处理用户端套餐相关HTTP请求
+ */
 @RestController("userSetmealController")
 @RequestMapping("/user/setmeal")
 @Api(tags = "C端-套餐浏览接口")
 @Slf4j
 public class SetmealController {
     @Autowired
+    //套餐业务服务
     private SetmealService setmealService;
 
     /**
      * 条件查询
      *
-     * @param categoryId
-     * @return
+     * @param categoryId 分类主键
+     * @return业务处理结果
      */
     @GetMapping("/list")
     @ApiOperation("根据分类id查询套餐")
@@ -46,8 +50,8 @@ public class SetmealController {
     /**
      * 根据套餐id查询包含的菜品列表
      *
-     * @param id
-     * @return
+     * @param id 业务对象主键
+     * @return业务处理结果
      */
     @GetMapping("/dish/{id}")
     @ApiOperation("根据套餐id查询包含的菜品列表")

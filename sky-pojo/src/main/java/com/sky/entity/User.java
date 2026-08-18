@@ -9,14 +9,19 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * 映射并承载用户相关业务数据
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements Serializable {
 
+    //序列化版本标识
     private static final long serialVersionUID = 1L;
 
+    //业务对象主键
     private Long id;
 
     //微信用户唯一标识

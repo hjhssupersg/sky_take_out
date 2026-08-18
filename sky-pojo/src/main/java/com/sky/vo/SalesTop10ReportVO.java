@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * 封装商品销量排名报表业务的接口返回数据
+ */
 @Data
 @Builder
 @NoArgsConstructor

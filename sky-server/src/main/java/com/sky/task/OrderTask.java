@@ -11,21 +11,25 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 定时处理超时未支付和长期派送中的订单。
+ * 定时处理超时未支付和长期派送中的订单
  */
 @Component
 @Slf4j
 public class OrderTask {
 
     @Autowired
+    //订单数据访问对象
     private final OrderMapper orderMapper;
 
+    /**
+     * 创建订单定时任务组件
+     */
     public OrderTask(OrderMapper orderMapper) {
         this.orderMapper = orderMapper;
     }
 
     /**
-     * 每分钟取消下单超过 15 分钟仍未支付的订单。
+     * 每分钟取消下单超过 15 分钟仍未支付的订单
      */
     @Scheduled(cron = "0 * * * * ?")
     public void processTimeoutOrders() {
@@ -43,7 +47,7 @@ public class OrderTask {
     }
 
     /**
-     * 每天凌晨 1 点完成派送中超过 1 小时的订单。
+     * 每天凌晨 1 点完成派送中超过 1 小时的订单
      */
     @Scheduled(cron = "0 0 1 * * ?")
     public void processDeliveryOrders() {

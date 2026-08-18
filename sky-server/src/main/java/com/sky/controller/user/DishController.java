@@ -15,21 +15,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
+/**
+ * 负责接收并处理用户端菜品相关HTTP请求
+ */
 @RestController("userDishController")
 @RequestMapping("/user/dish")
 @Slf4j
 @Api(tags = "C端-菜品浏览接口")
 public class DishController {
     @Autowired
+    //菜品业务服务
     private DishService dishService;
     @Autowired
+    //Redis数据访问模板
     private RedisTemplate redisTemplate;
 
     /**
      * 根据分类id查询菜品
      *
-     * @param categoryId
-     * @return
+     * @param categoryId 分类主键
+     * @return业务处理结果
      */
     @GetMapping("/list")
     @ApiOperation("根据分类id查询菜品")

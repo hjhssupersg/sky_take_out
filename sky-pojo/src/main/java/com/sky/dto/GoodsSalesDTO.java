@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * 封装商品销量业务的请求参数
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

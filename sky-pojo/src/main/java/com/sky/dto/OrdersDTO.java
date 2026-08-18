@@ -7,9 +7,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 封装订单业务的请求参数
+ */
 @Data
 public class OrdersDTO implements Serializable {
 
+    //业务对象主键
     private Long id;
 
     //订单号
@@ -51,6 +55,7 @@ public class OrdersDTO implements Serializable {
     //收货人
     private String consignee;
 
+    //订单明细列表
     private List<OrderDetail> orderDetails;
 
 }

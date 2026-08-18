@@ -29,15 +29,18 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
+    //分类数据访问对象
     private CategoryMapper categoryMapper;
     @Autowired
+    //菜品数据访问对象
     private DishMapper dishMapper;
     @Autowired
+    //套餐数据访问对象
     private SetmealMapper setmealMapper;
 
     /**
      * 新增分类
-     * @param categoryDTO
+     * @param categoryDTO 分类请求参数
      */
     public void save(CategoryDTO categoryDTO) {
         Category category = new Category();
@@ -50,8 +53,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 分页查询
-     * @param categoryPageQueryDTO
-     * @return
+     * @param categoryPageQueryDTO 分类分页查询条件
+     * @return业务处理结果
      */
     public PageResult pageQuery(CategoryPageQueryDTO categoryPageQueryDTO) {
         PageHelper.startPage(categoryPageQueryDTO.getPage(),categoryPageQueryDTO.getPageSize());
@@ -62,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 根据id删除分类
-     * @param id
+     * @param id 业务对象主键
      */
     public void deleteById(Long id) {
         //查询当前分类是否关联了菜品，如果关联了就抛出业务异常
@@ -85,7 +88,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 修改分类
-     * @param categoryDTO
+     * @param categoryDTO 分类请求参数
      */
     public void update(CategoryDTO categoryDTO) {
         Category category = new Category();
@@ -95,8 +98,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 启用、禁用分类
-     * @param status
-     * @param id
+     * @param status 业务状态编码
+     * @param id 业务对象主键
      */
     public void startOrStop(Integer status, Long id) {
         Category category = Category.builder()
@@ -110,8 +113,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 根据类型查询分类
-     * @param type
-     * @return
+     * @param type 业务类型编码
+     * @return业务处理结果
      */
     public List<Category> list(Integer type) {
         return categoryMapper.list(type);

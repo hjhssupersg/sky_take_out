@@ -23,12 +23,13 @@ import java.util.List;
 public class CategoryController {
 
     @Autowired
+    //分类业务服务
     private CategoryService categoryService;
 
     /**
      * 新增分类
-     * @param categoryDTO
-     * @return
+     * @param categoryDTO 分类请求参数
+     * @return业务处理结果
      */
     @PostMapping
     @ApiOperation("新增分类")
@@ -40,8 +41,8 @@ public class CategoryController {
 
     /**
      * 分类分页查询
-     * @param categoryPageQueryDTO
-     * @return
+     * @param categoryPageQueryDTO 分类分页查询条件
+     * @return业务处理结果
      */
     @GetMapping("/page")
     @ApiOperation("分类分页查询")
@@ -53,8 +54,8 @@ public class CategoryController {
 
     /**
      * 删除分类
-     * @param id
-     * @return
+     * @param id 业务对象主键
+     * @return业务处理结果
      */
     @DeleteMapping
     @ApiOperation("删除分类")
@@ -66,8 +67,8 @@ public class CategoryController {
 
     /**
      * 修改分类
-     * @param categoryDTO
-     * @return
+     * @param categoryDTO 分类请求参数
+     * @return业务处理结果
      */
     @PutMapping
     @ApiOperation("修改分类")
@@ -79,9 +80,9 @@ public class CategoryController {
 
     /**
      * 启用、禁用分类
-     * @param status
-     * @param id
-     * @return
+     * @param status 业务状态编码
+     * @param id 业务对象主键
+     * @return业务处理结果
      */
     @PostMapping("/status/{status}")
     @ApiOperation("启用禁用分类")
@@ -93,8 +94,8 @@ public class CategoryController {
 
     /**
      * 根据类型查询分类
-     * @param type
-     * @return
+     * @param type 业务类型编码
+     * @return业务处理结果
      */
     @GetMapping("/list")
     @ApiOperation("根据类型查询分类")

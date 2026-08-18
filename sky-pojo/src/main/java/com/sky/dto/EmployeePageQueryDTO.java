@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 封装员工分页查询的分页筛选条件
+ */
 @Data
 public class EmployeePageQueryDTO implements Serializable {
 

@@ -23,16 +23,20 @@ import org.springframework.util.DigestUtils;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 实现员工业务规则、数据校验及持久化协调
+ */
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
+    //员工数据访问对象
     private EmployeeMapper employeeMapper;
 
     /**
      * 将性别字段进行统一处理
-     * @param sex
-     * @return
+     * @param sex 性别编码
+     * @return业务处理结果
      */
     private String normalizeSex(String sex) {
         if (sex == null) {
@@ -52,8 +56,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 员工登录
      *
-     * @param employeeLoginDTO
-     * @return
+     * @param employeeLoginDTO 员工登录请求参数
+     * @return业务处理结果
      */
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
@@ -88,7 +92,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 新增员工
      *
-     * @param employeeDTO
+     * @param employeeDTO 员工请求参数
      */
     public void save(EmployeeDTO employeeDTO) {
         //创建一个员工entity对象
@@ -107,8 +111,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 员工分页查询
      *
-     * @param employeePageQueryDTO
-     * @return
+     * @param employeePageQueryDTO 员工分页查询条件
+     * @return业务处理结果
      */
     public PageResult page(EmployeePageQueryDTO employeePageQueryDTO) {
         PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
@@ -123,8 +127,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 启用、禁用员工账号
      *
-     * @param status
-     * @param id
+     * @param status 业务状态编码
+     * @param id 业务对象主键
      */
     public void startOrStop(Integer status, Long id) {
         Employee employee = Employee.builder()
@@ -137,8 +141,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 根据id查询员工信息
      *
-     * @param id
-     * @return
+     * @param id 业务对象主键
+     * @return业务处理结果
      */
     public Employee getById(Long id) {
         Employee employee = employeeMapper.getById(id);
@@ -150,8 +154,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 编辑员工信息
      *
-     * @param employeeDTO
-     * @return
+     * @param employeeDTO 员工请求参数
+     * @return业务处理结果
      */
     public void update(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();

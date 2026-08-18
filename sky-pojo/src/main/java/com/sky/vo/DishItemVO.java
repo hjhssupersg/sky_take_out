@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * 封装套餐菜品明细业务的接口返回数据
+ */
 @Data
 @Builder
 @NoArgsConstructor

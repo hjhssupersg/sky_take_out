@@ -3,6 +3,9 @@ package com.sky.vo;
 import lombok.Data;
 import java.io.Serializable;
 
+/**
+ * 封装订单状态统计业务的接口返回数据
+ */
 @Data
 public class OrderStatisticsVO implements Serializable {
     //待接单数量

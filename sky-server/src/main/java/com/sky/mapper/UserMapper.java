@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+/**
+ * 负责用户数据的持久化访问
+ */
 @Mapper
 public interface UserMapper {
     /**
@@ -17,15 +20,15 @@ public interface UserMapper {
 
     /**
      * 根据openid查询用户信息
-     * @param openid
-     * @return
+     * @param openid 微信用户唯一标识
+     * @return业务处理结果
      */
     @Select("select * from user where openid = #{openid}")
     User getByOpenid(String openid);
 
     /**
      * 插入用户数据
-     * @param user
+     * @param user 用户对象
      */
     void insert(User user);
 }

@@ -14,28 +14,32 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * 负责套餐数据的持久化访问
+ */
 @Mapper
 public interface SetmealMapper {
 
-    /**
-     * 根据分类id查询套餐的数量
-     * @param id
-     * @return
-     */
+    //根据分类id查询套餐的数量
+    //@param id
+    //@return
     @Select("select count(id) from setmeal where category_id = #{categoryId}")
+    /**
+     * 统计指定分类下的关联数据数量
+     */
     Integer countByCategoryId(@Param("categoryId") Long id);
 
     /**
      * 新增套餐
-     * @param setmeal
+     * @param setmeal 套餐对象
      */
     @AutoFill(value = OperationType.INSERT)
     void insert(Setmeal setmeal);
 
     /**
      * 分页查询套餐
-     * @param setmealPageQueryDTO
-     * @return
+     * @param setmealPageQueryDTO 套餐分页查询条件
+     * @return业务处理结果
      */
     Page<SetmealVO> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
 
@@ -48,41 +52,44 @@ public interface SetmealMapper {
 
     /**
      * 根据id查询套餐
-     * @param id
-     * @return
+     * @param id 业务对象主键
+     * @return业务处理结果
      */
     @Select("select * from setmeal where id = #{id}")
     Setmeal getById(Long id);
 
     /**
      * 根据id删除套餐
-     * @param id
+     * @param id 业务对象主键
      */
     @Delete("delete from setmeal where id = #{id}")
     void deleteById(Long id);
 
     /**
      * 修改套餐
-     * @param setmeal
+     * @param setmeal 套餐对象
      */
     @AutoFill(value = OperationType.UPDATE)
     void update(Setmeal setmeal);
 
     /**
      * 动态条件查询套餐
-     * @param setmeal
-     * @return
+     * @param setmeal 套餐对象
+     * @return业务处理结果
      */
     List<Setmeal> list(Setmeal setmeal);
 
     /**
      * 根据套餐id查询菜品选项
-     * @param setmealId
-     * @return
+     * @param setmealId 套餐主键
+     * @return业务处理结果
      */
     @Select("select sd.name, sd.copies, d.image, d.description " +
             "from setmeal_dish sd left join dish d on sd.dish_id = d.id " +
             "where sd.setmeal_id = #{setmealId}")
+    /**
+     * 查询套餐关联的菜品明细
+     */
     List<DishItemVO> getDishItemBySetmealId(Long setmealId);
 
 

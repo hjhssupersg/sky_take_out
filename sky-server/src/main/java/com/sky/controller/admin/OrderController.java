@@ -13,12 +13,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 负责接收并处理管理端订单相关HTTP请求
+ */
 @RestController("adminOrderController")
 @RequestMapping("/admin/order")
 @Slf4j
 public class OrderController {
 
     @Autowired
+    //订单业务服务
     private OrderService orderService;
 
     /**

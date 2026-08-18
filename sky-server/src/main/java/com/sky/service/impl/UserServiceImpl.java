@@ -18,20 +18,25 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 实现用户业务规则、数据校验及持久化协调
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
     //微信服务接口地址
     public static final String WX_LOGIN = "https://api.weixin.qq.com/sns/jscode2session";
     @Autowired
+    //微信支付配置
     private WeChatProperties weChatProperties;
     @Autowired
+    //用户数据访问对象
     private UserMapper userMapper;
 
     /**
      * 用户微信登录
-     * @param userLoginDTO
-     * @return
+     * @param userLoginDTO 用户登录请求参数
+     * @return业务处理结果
      */
     public User Wxlogin(UserLoginDTO userLoginDTO) {
         String openid = getOpenid(userLoginDTO.getCode());
@@ -56,8 +61,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 调用微信接口服务，获取用户的openid
-     * @param code
-     * @return
+     * @param code 响应状态码
+     * @return业务处理结果
      */
     public String getOpenid(String code) {
         //调用微信接口服务，获取当前微信用户的openid

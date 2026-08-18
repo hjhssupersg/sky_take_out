@@ -27,14 +27,16 @@ import java.util.Map;
 public class EmployeeController {
 
     @Autowired
+    //员工业务服务
     private EmployeeService employeeService;
     @Autowired
+    //JWT令牌配置
     private JwtProperties jwtProperties;
 
     /**
      * 登录
-     * @param employeeLoginDTO
-     * @return
+     * @param employeeLoginDTO 员工登录请求参数
+     * @return业务处理结果
      */
     @PostMapping("/login")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
@@ -62,7 +64,7 @@ public class EmployeeController {
     /**
      * 退出登录
      *
-     * @return
+     * @return业务处理结果
      */
     @PostMapping("/logout")
     public Result<String> logout() {
@@ -74,8 +76,8 @@ public class EmployeeController {
     /**
      * 新增员工
      *
-     * @param employeeDTO
-     * @return
+     * @param employeeDTO 员工请求参数
+     * @return业务处理结果
      */
     @PostMapping
     public Result save(@RequestBody EmployeeDTO employeeDTO) {
@@ -87,8 +89,8 @@ public class EmployeeController {
     /**
      * 分页查询员工
      *
-     * @param employeePageQueryDTO
-     * @return
+     * @param employeePageQueryDTO 员工分页查询条件
+     * @return业务处理结果
      */
     @GetMapping("/page")
     public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO) {
@@ -100,9 +102,9 @@ public class EmployeeController {
     /**
      * 启用、禁用员工账号
      *
-     * @param status
-     * @param id
-     * @return
+     * @param status 业务状态编码
+     * @param id 业务对象主键
+     * @return业务处理结果
      */
     @PostMapping("/status/{status}")
     public Result startOrStop(@PathVariable Integer status, Long id) {
@@ -114,8 +116,8 @@ public class EmployeeController {
     /**
      * 根据id查询员工信息
      *
-     * @param id
-     * @return
+     * @param id 业务对象主键
+     * @return业务处理结果
      */
     @GetMapping("/{id}")
     public Result<Employee> getById(@PathVariable Long id) {
@@ -127,8 +129,8 @@ public class EmployeeController {
     /**
      * 编辑员工信息
      *
-     * @param employeeDTO
-     * @return
+     * @param employeeDTO 员工请求参数
+     * @return业务处理结果
      */
     @PutMapping
     public Result update(@RequestBody EmployeeDTO employeeDTO) {

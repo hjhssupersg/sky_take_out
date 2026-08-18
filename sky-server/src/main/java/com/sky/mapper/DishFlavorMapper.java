@@ -7,25 +7,28 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+/**
+ * 负责菜品口味数据的持久化访问
+ */
 @Mapper
 public interface DishFlavorMapper {
     /**
      * 批量插入菜品口味数据
-     * @param flavors
+     * @param flavors 菜品口味列表
      */
     void insertBatch(List<DishFlavor> flavors);
 
     /**
      * 根据菜品id删除对应的口味数据
-     * @param dishId
+     * @param dishId 菜品主键
      */
     @Delete("delete from dish_flavor where dish_id = #{dishId}")
     void deleteByDishId(Long dishId);
 
     /**
      * 根据菜品id查询对应的口味数据
-     * @param dishId
-     * @return
+     * @param dishId 菜品主键
+     * @return业务处理结果
      */
     @Select("select * from dish_flavor where dish_id = #{dishId}")
     List<DishFlavor> getByDishId(Long dishId);

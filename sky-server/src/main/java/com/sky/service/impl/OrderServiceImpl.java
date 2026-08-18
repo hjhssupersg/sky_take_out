@@ -35,12 +35,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * 实现订单业务规则、数据校验及持久化协调
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
+    //订单数据访问对象
     @Autowired private OrderMapper orderMapper;
+    //订单明细数据访问对象
     @Autowired private OrderDetailMapper orderDetailMapper;
+    //地址簿数据访问对象
     @Autowired private AddressBookMapper addressBookMapper;
+    //购物车数据访问对象
     @Autowired private ShoppingCartMapper shoppingCartMapper;
+    //WebSocket消息推送服务
     @Autowired private WebSocketServer webSocketServer;
 
     /**

@@ -9,6 +9,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
+/**
+ * 项目启动入口，负责加载Spring Boot应用上下文并启用事务、缓存和定时任务
+ */
 @SpringBootApplication
 @EnableAspectJAutoProxy
 @MapperScan("com.sky.mapper")
@@ -17,6 +20,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableScheduling //开启定时任务调度功能
 @Slf4j
 public class SkyApplication {
+    /**
+     * 启动Spring Boot应用并加载项目配置
+     */
     public static void main(String[] args) {
         SpringApplication.run(SkyApplication.class, args);
         log.info("server started");

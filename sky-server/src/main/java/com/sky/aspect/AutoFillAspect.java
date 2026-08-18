@@ -16,6 +16,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 
+/**
+ * 拦截标记了AutoFill的Mapper操作，并自动填充创建人、修改人及操作时间
+ */
 @Aspect
 @Component
 @Slf4j
@@ -23,12 +26,18 @@ public class AutoFillAspect {
     /**
      * 切入点：拦截所有 mapper包下的类中，带有 @AutoFill注解的方法
      */
+    /**
+     * 定义自动填充切入点，拦截带有AutoFill注解的Mapper方法
+     */
     @Pointcut("execution(* com.sky.mapper.*.*(..)) && @annotation(com.sky.annotion.AutoFill)")
     public void autoFillPointCut() {
     }
 
     /**
      * 前置通知：在切入点方法执行之前，执行自动填充公共字段的逻辑
+     */
+    /**
+     * 根据数据库操作类型填充创建人、修改人和操作时间
      */
     @Before("autoFillPointCut()")
     public void autoFill(JoinPoint joinPoint) {
@@ -45,7 +54,7 @@ public class AutoFillAspect {
             return;
         }
         Object entity = args[0];//获取第一个参数，即实体对象
-        //准备好要填充的公共字段的值
+        //准备创建人、修改人和操作时间等审计字段
         LocalDateTime now = LocalDateTime.now();
         Long currentId = BaseContext.getCurrentId();
 

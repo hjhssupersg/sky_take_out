@@ -15,9 +15,15 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+/**
+ * 负责注册Redis访问与缓存相关基础组件
+ */
 @Configuration
 @Slf4j
 public class RedisConfiguration {
+    /**
+     * 创建RedisTemplate并配置键值序列化器
+     */
     @Bean
     public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         log.info("开始创建redis模板对象...");
@@ -34,6 +40,9 @@ public class RedisConfiguration {
         return redisTemplate;
     }
 
+    /**
+     * 创建Redis缓存管理器并配置缓存序列化方式
+     */
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         JacksonObjectMapper objectMapper = new JacksonObjectMapper();

@@ -11,17 +11,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 负责接收并处理用户端订单相关HTTP请求
+ */
 @RestController("userOrderController")
 @RequestMapping("/user/order")
 @Slf4j
 public class OrderController {
     @Autowired
+    //订单业务服务
     private OrderService orderService;
 
     /**
      * 用户下单
-     * @param ordersSubmitDTO
-     * @return
+     * @param ordersSubmitDTO 用户下单请求参数
+     * @return业务处理结果
      */
     @PostMapping("/submit")
     public Result<OrderSubmitVO> submit(@RequestBody OrdersSubmitDTO ordersSubmitDTO) {
@@ -31,7 +35,7 @@ public class OrderController {
     }
 
     /**
-     * 模拟支付：支付成功后直接将订单更新为待接单。
+     * 模拟支付：支付成功后直接将订单更新为待接单
      */
     @PostMapping("/payment")
     public Result<Void> payment(@RequestBody OrdersPaymentDTO ordersPaymentDTO) {

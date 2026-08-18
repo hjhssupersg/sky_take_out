@@ -17,8 +17,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Dish implements Serializable {
 
+    //序列化版本标识
     private static final long serialVersionUID = 1L;
 
+    //业务对象主键
     private Long id;
 
     //菜品名称
@@ -39,12 +41,16 @@ public class Dish implements Serializable {
     //0 停售 1 起售
     private Integer status;
 
+    //创建时间
     private LocalDateTime createTime;
 
+    //最后修改时间
     private LocalDateTime updateTime;
 
+    //创建人ID
     private Long createUser;
 
+    //最后修改人ID
     private Long updateUser;
 
 }

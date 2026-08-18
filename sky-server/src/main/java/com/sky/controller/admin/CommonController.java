@@ -13,20 +13,21 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/admin/common")
-@Slf4j
 /**
  * 通用接口
  */
+@RestController
+@RequestMapping("/admin/common")
+@Slf4j
 public class CommonController {
     @Autowired
+    //阿里云OSS文件存储工具
     private AliOssUtil aliOssUtil;
 
     /**
      * 文件上传（上传到阿里云OSS对象存储服务平台）
-     * @param file
-     * @return
+     * @param file 待上传文件
+     * @return业务处理结果
      */
     @PostMapping("/upload")
     public Result<String> upload(MultipartFile file) {

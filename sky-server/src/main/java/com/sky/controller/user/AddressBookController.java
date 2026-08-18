@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+/**
+ * 负责接收并处理用户端地址簿相关HTTP请求
+ */
 @RestController
 @RequestMapping("/user/addressBook")
 @Api(tags = "C端地址簿接口")
@@ -18,12 +21,13 @@ import java.util.List;
 public class AddressBookController {
 
     @Autowired
+    //地址簿业务服务
     private AddressBookService addressBookService;
 
     /**
      * 查询当前登录用户的所有地址信息
      *
-     * @return
+     * @return业务处理结果
      */
     @GetMapping("/list")
     @ApiOperation("查询当前登录用户的所有地址信息")
@@ -38,8 +42,8 @@ public class AddressBookController {
     /**
      * 新增地址
      *
-     * @param addressBook
-     * @return
+     * @param addressBook 地址簿对象
+     * @return业务处理结果
      */
     @PostMapping
     @ApiOperation("新增地址")
@@ -65,8 +69,8 @@ public class AddressBookController {
     /**
      * 根据id修改地址
      *
-     * @param addressBook
-     * @return
+     * @param addressBook 地址簿对象
+     * @return业务处理结果
      */
     @PutMapping
     @ApiOperation("根据id修改地址")
@@ -79,8 +83,8 @@ public class AddressBookController {
     /**
      * 设置默认地址
      *
-     * @param addressBook
-     * @return
+     * @param addressBook 地址簿对象
+     * @return业务处理结果
      */
     @PutMapping("/default")
     @ApiOperation("设置默认地址")
@@ -93,8 +97,8 @@ public class AddressBookController {
     /**
      * 根据id删除地址
      *
-     * @param id
-     * @return
+     * @param id 业务对象主键
+     * @return业务处理结果
      */
     @DeleteMapping
     @ApiOperation("根据id删除地址")

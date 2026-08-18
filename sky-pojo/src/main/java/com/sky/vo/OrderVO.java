@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * 封装订单业务的接口返回数据
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

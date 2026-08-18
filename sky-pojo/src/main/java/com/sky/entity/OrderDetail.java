@@ -17,8 +17,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class OrderDetail implements Serializable {
 
+    //序列化版本标识
     private static final long serialVersionUID = 1L;
 
+    //业务对象主键
     private Long id;
 
     //名称

@@ -42,12 +42,13 @@ public class WeChatPayUtil {
     public static final String REFUNDS = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds";
 
     @Autowired
+    //微信支付配置
     private WeChatProperties weChatProperties;
 
     /**
      * 获取调用微信接口的客户端工具对象
      *
-     * @return
+     * @return业务处理结果
      */
     private CloseableHttpClient getClient() {
         PrivateKey merchantPrivateKey = null;
@@ -56,14 +57,14 @@ public class WeChatPayUtil {
             merchantPrivateKey = PemUtil.loadPrivateKey(new FileInputStream(new File(weChatProperties.getPrivateKeyFilePath())));
             //加载平台证书文件
             X509Certificate x509Certificate = PemUtil.loadCertificate(new FileInputStream(new File(weChatProperties.getWeChatPayCertFilePath())));
-            //wechatPayCertificates微信支付平台证书列表。你也可以使用后面章节提到的“定时更新平台证书功能”，而不需要关心平台证书的来龙去脉
+            //wechatPayCertificates微信支付平台证书列表你也可以使用后面章节提到的“定时更新平台证书功能”，而不需要关心平台证书的来龙去脉
             List<X509Certificate> wechatPayCertificates = Arrays.asList(x509Certificate);
 
             WechatPayHttpClientBuilder builder = WechatPayHttpClientBuilder.create()
                     .withMerchant(weChatProperties.getMchid(), weChatProperties.getMchSerialNo(), merchantPrivateKey)
                     .withWechatPay(wechatPayCertificates);
 
-            // 通过WechatPayHttpClientBuilder构造的HttpClient，会自动的处理签名和验签
+            //通过WechatPayHttpClientBuilder构造的HttpClient，会自动的处理签名和验签
             CloseableHttpClient httpClient = builder.build();
             return httpClient;
         } catch (FileNotFoundException e) {
@@ -75,9 +76,9 @@ public class WeChatPayUtil {
     /**
      * 发送post方式请求
      *
-     * @param url
-     * @param body
-     * @return
+     * @param url 请求地址
+     * @param body HTTP请求体
+     * @return业务处理结果
      */
     private String post(String url, String body) throws Exception {
         CloseableHttpClient httpClient = getClient();
@@ -101,8 +102,8 @@ public class WeChatPayUtil {
     /**
      * 发送get方式请求
      *
-     * @param url
-     * @return
+     * @param url 请求地址
+     * @return业务处理结果
      */
     private String get(String url) throws Exception {
         CloseableHttpClient httpClient = getClient();
@@ -129,7 +130,7 @@ public class WeChatPayUtil {
      * @param total       总金额
      * @param description 商品描述
      * @param openid      微信用户的openid
-     * @return
+     * @return业务处理结果
      */
     private String jsapi(String orderNum, BigDecimal total, String description, String openid) throws Exception {
         JSONObject jsonObject = new JSONObject();
@@ -161,7 +162,7 @@ public class WeChatPayUtil {
      * @param total       金额，单位 元
      * @param description 商品描述
      * @param openid      微信用户的openid
-     * @return
+     * @return业务处理结果
      */
     public JSONObject pay(String orderNum, BigDecimal total, String description, String openid) throws Exception {
         //统一下单，生成预支付交易单
@@ -212,7 +213,7 @@ public class WeChatPayUtil {
      * @param outRefundNo   商户退款单号
      * @param refund        退款金额
      * @param total         原订单金额
-     * @return
+     * @return业务处理结果
      */
     public String refund(String outTradeNo, String outRefundNo, BigDecimal refund, BigDecimal total) throws Exception {
         JSONObject jsonObject = new JSONObject();

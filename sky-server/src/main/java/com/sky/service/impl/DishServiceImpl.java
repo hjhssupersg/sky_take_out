@@ -24,19 +24,28 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 实现菜品业务规则、数据校验及持久化协调
+ */
 @Service
 @Slf4j
 public class DishServiceImpl implements DishService {
     @Autowired
+    //菜品数据访问对象
     private DishMapper dishMapper;
     @Autowired
+    //菜品口味数据访问对象
     private DishFlavorMapper dishFlavorMapper;
     @Autowired
+    //套餐菜品关联数据访问对象
     private SetmealDishMapper setmealDishMapper;
 
     /**
      * 新增菜品和对应的口味
-     * @param dishDTO
+     * @param dishDTO 菜品请求参数
+     */
+    /**
+     * 保存菜品基础信息并同步维护菜品口味
      */
     @Transactional//开启事务管理
     public void saveWithFlavor(DishDTO dishDTO) {
@@ -60,8 +69,8 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 菜品分页查询
-     * @param dishPageQueryDTO
-     * @return
+     * @param dishPageQueryDTO 菜品分页查询条件
+     * @return业务处理结果
      */
     public PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO) {
         PageHelper.startPage(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
@@ -71,7 +80,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 菜品批量删除
-     * @param ids
+     * @param ids 业务对象主键集合
      */
     public void deleteBatch(List<Long> ids) {
         //判断当前套餐能否被删除-是否存在起售中的菜品
@@ -101,8 +110,8 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 起售、停售菜品
-     * @param status
-     * @param id
+     * @param status 业务状态编码
+     * @param id 业务对象主键
      */
     public void startOrStop(Integer status, Long id) {
         Dish dish = Dish.builder()
@@ -114,8 +123,8 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 根据id查询菜品信息和对应的口味信息
-     * @param id
-     * @return
+     * @param id 业务对象主键
+     * @return业务处理结果
      */
     public DishVO getByIdWithFlavor(Long id) {
         //根据菜品id查询菜品信息
@@ -131,7 +140,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 修改菜品和对应的口味
-     * @param dishDTO
+     * @param dishDTO 菜品请求参数
      */
      public void updateWithFlavor(DishDTO dishDTO) {
          //修改菜品表基本信息
@@ -142,7 +151,7 @@ public class DishServiceImpl implements DishService {
         //删除原有口味数据
         dishFlavorMapper.deleteByDishId(dishDTO.getId());
 
-         // 重新插入口味数据
+         //重新插入口味数据
          List<DishFlavor> flavors = dishDTO.getFlavors();
          if (flavors != null && !flavors.isEmpty()) {
              for (DishFlavor flavor : flavors) {
@@ -155,8 +164,8 @@ public class DishServiceImpl implements DishService {
      }
     /**
      * 根据条件查询菜品
-     * @param dish
-     * @return
+     * @param dish 菜品对象
+     * @return业务处理结果
      */
     public List<Dish> list(Dish dish) {
         return dishMapper.list(dish);
@@ -164,8 +173,8 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 条件查询菜品和口味
-     * @param dish
-     * @return
+     * @param dish 菜品对象
+     * @return业务处理结果
      */
     public List<DishVO> listWithFlavor(Dish dish) {
         List<Dish> dishList = dishMapper.list(dish);

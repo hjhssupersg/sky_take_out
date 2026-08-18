@@ -5,9 +5,15 @@ package com.sky.exception;
  */
 public class PasswordErrorException extends BaseException {
 
+    /**
+     * 创建密码错误异常对象
+     */
     public PasswordErrorException() {
     }
 
+    /**
+     * 创建密码错误异常对象
+     */
     public PasswordErrorException(String msg) {
         super(msg);
     }

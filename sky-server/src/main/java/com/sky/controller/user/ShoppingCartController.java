@@ -19,12 +19,13 @@ import java.util.List;
  */
 public class ShoppingCartController {
     @Autowired
+    //购物车业务服务
     private ShoppingCartService shoppingCartService;
 
     /**
      * 添加购物车
-     * @param shoppingCartDTO
-     * @return
+     * @param shoppingCartDTO 购物车请求参数
+     * @return业务处理结果
      */
     @PostMapping("/add")
     public Result add(@RequestBody ShoppingCartDTO shoppingCartDTO) {
@@ -35,7 +36,7 @@ public class ShoppingCartController {
 
     /**
      * 查看购物车
-     * @return
+     * @return业务处理结果
      */
     @GetMapping("/list")
     public Result<List<ShoppingCart>> list() {
@@ -46,7 +47,7 @@ public class ShoppingCartController {
 
     /**
      * 清空购物车
-     * @return
+     * @return业务处理结果
      */
     @DeleteMapping("/clean")
     public Result clean() {

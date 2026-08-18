@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 封装员工密码修改业务的请求参数
+ */
 @Data
 public class PasswordEditDTO implements Serializable {
 

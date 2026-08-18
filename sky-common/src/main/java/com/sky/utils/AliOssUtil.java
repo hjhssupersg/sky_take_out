@@ -9,30 +9,37 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import java.io.ByteArrayInputStream;
 
+/**
+ * 提供阿里云OSS文件存储相关的通用工具能力
+ */
 @Data
 @AllArgsConstructor
 @Slf4j
 public class AliOssUtil {
 
+    //阿里云OSS访问节点
     private String endpoint;
+    //阿里云OSS访问密钥ID
     private String accessKeyId;
+    //阿里云OSS访问密钥
     private String accessKeySecret;
+    //阿里云OSS存储桶名称
     private String bucketName;
 
     /**
      * 文件上传
      *
-     * @param bytes
-     * @param objectName
-     * @return
+     * @param bytes 待上传的文件字节
+     * @param objectName OSS对象名称
+     * @return业务处理结果
      */
     public String upload(byte[] bytes, String objectName) {
 
-        // 创建OSSClient实例。
+        //创建OSSClient实例
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         try {
-            // 创建PutObject请求。
+            //创建PutObject请求
             ossClient.putObject(bucketName, objectName, new ByteArrayInputStream(bytes));
         } catch (OSSException oe) {
             System.out.println("Caught an OSSException, which means your request made it to OSS, "
@@ -52,7 +59,7 @@ public class AliOssUtil {
             }
         }
 
-        //文件访问路径规则 https://BucketName.Endpoint/ObjectName
+        //文件访问路径规则 https://BucketNameEndpoint/ObjectName
         StringBuilder stringBuilder = new StringBuilder("https://");
         stringBuilder
                 .append(bucketName)
