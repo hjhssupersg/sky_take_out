@@ -1,0 +1,21 @@
+package com.sky.exception;
+
+/**
+ * 密码错误异常
+ */
+public class PasswordErrorException extends BaseException {
+
+    /**
+     * 创建密码错误异常对象
+     */
+    public PasswordErrorException() {
+    }
+
+    /**
+     * 创建密码错误异常对象
+     */
+    public PasswordErrorException(String msg) {
+        super(msg);
+    }
+
+}

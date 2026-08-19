@@ -1,0 +1,39 @@
+# Local migration backups and runtimes
+.local-backup/
+.local-runtime/
+
+# IDE and operating system files
+**/.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Java build output
+**/target/
+*.class
+
+# Node and mini program generated dependencies
+**/node_modules/
+**/node-modules/
+**/project.private.config.json
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+**/application-local.yml
+**/application-local.yaml
+**/application-local.properties
+
+# Runtime files
+**/logs/
+**/temp/
+**/*.pid
+**/*.log
+
+# The admin source is unavailable; keep the deployable build but not source maps.
+apps/admin-web/dist/**/*.map
+
+# Empty legacy path that may be recreated by the IDE during migration
+/backend/
