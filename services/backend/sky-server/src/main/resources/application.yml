@@ -6,17 +6,6 @@ spring:
     active: ${SPRING_PROFILES_ACTIVE:dev}
   main:
     allow-circular-references: true
-  datasource:
-    druid:
-      driver-class-name: ${sky.datasource.driver-class-name}
-      url: jdbc:mysql://${sky.datasource.host}:${sky.datasource.port}/${sky.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
-      username: ${sky.datasource.username}
-      password: ${sky.datasource.password}
-  redis:
-    host: ${sky.redis.host}
-    port: ${sky.redis.port}
-    database: ${sky.redis.database}
-
 
 mybatis:
   #mapper配置文件
@@ -47,11 +36,3 @@ sky:
     user-secret-key: ${SKY_JWT_USER_SECRET}
     user-ttl: 7200000
     user-token-name: authentication
-  alioss:
-    endpoint: ${sky.alioss.endpoint}
-    access-key-id: ${sky.alioss.access-key-id}
-    access-key-secret: ${sky.alioss.access-key-secret}
-    bucket-name: ${sky.alioss.bucket-name}
-  wechat:
-    appid: ${sky.wechat.appid}
-    secret: ${sky.wechat.secret}

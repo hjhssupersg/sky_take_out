@@ -1,20 +1,21 @@
-sky:
+spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    host: ${SKY_DB_HOST:localhost}
-    port: ${SKY_DB_PORT:3306}
-    database: ${SKY_DB_NAME:sky_take_out}
-    username: ${SKY_DB_USERNAME:root}
-    password: ${SKY_DB_PASSWORD}
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://${SKY_DB_HOST:localhost}:${SKY_DB_PORT:3306}/${SKY_DB_NAME:sky_take_out}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: ${SKY_DB_USERNAME:root}
+      password: ${SKY_DB_PASSWORD}
+  redis:
+    host: ${SKY_REDIS_HOST:localhost}
+    port: ${SKY_REDIS_PORT:6379}
+    database: ${SKY_REDIS_DATABASE:0}
+
+sky:
   alioss:
     endpoint: ${SKY_OSS_ENDPOINT}
     access-key-id: ${SKY_OSS_ACCESS_KEY_ID}
     access-key-secret: ${SKY_OSS_ACCESS_KEY_SECRET}
     bucket-name: ${SKY_OSS_BUCKET_NAME}
-  redis:
-    host: ${SKY_REDIS_HOST:localhost}
-    port: ${SKY_REDIS_PORT:6379}
-    database: ${SKY_REDIS_DATABASE:0}
   wechat:
     appid: ${SKY_WECHAT_APPID}
     secret: ${SKY_WECHAT_SECRET}
