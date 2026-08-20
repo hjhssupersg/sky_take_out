@@ -31,7 +31,6 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
      * @param response HTTP响应对象
      * @param handler 异常处理方法
      * @return业务处理结果
-     * @throws Exception调用失败时抛出的异常
      */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //判断当前拦截到的是Controller的方法还是其他资源
